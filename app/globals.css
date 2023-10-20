@@ -16,12 +16,116 @@
   }
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: #000;
+  background: #f4f4f4;
+}
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  position: relative;
+}
+
+.container > section {
+  position: relative;
+}
+
+.weatherContainer {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  width: 100%;
+  min-height: 200px;
+  background-color: white;
+  border-top-left-radius: 250% 250%;
+  border-top-right-radius: 250% 250%;
+
+  border-bottom-left-radius: 300px;
+  border-bottom-right-radius: 300px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  font-size: 60px;
+}
+.reload {
+  background-color: #f4f4f4;
+  margin: 0 auto;
+  padding: 1rem;
+  width: fit-content;
+  border-radius: 50%;
+
+  position: absolute;
+  bottom: -30px;
+  left: 37%;
+
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+.svgContainer {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+
+  background: #bdbbbb;
+  border: 2px solid #a5a5a5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+
+  transition: 300ms all ease;
+}
+.svgContainer:hover {
+  opacity: 0.7;
+}
+
+.modalSearch {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.showModal {
+  animation: show 500ms linear;
+}
+
+@keyframes show {
+  0% {
+    -webkit-transform: translateY(100px);
+    transform: translateY(100px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
+.loading-skeleton {
+  background: linear-gradient(90deg, #f4f4f4 25%, #e0e0e0 50%, #f4f4f4 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.spin {
+  animation: spin 500ms linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
