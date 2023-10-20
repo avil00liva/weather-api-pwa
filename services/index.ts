@@ -11,7 +11,7 @@ export const getWeatherApiData = async (location: string): Promise<WeatherApiRes
     try {
         const key = process.env.NEXT_PUBLIC_API_KEY;
         const response = await axios.get(
-          `http://api.weatherapi.com/v1/forecast.json?key=${key}&q=${location}&days=1&aqi=no&alerts=no`
+          `https://api.weatherapi.com/v1/forecast.json?key=${key}&q=${location}&days=1&aqi=no&alerts=no`
         )
         return {data: response.data, error: null};
       } catch (error) {
