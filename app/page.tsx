@@ -9,6 +9,14 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+type RootState = {
+  weather: {
+    weather: any;
+    error: any; 
+  };
+
+};
+
 export default function Home() {
   const [search, setSearch] = useState(false)
   const [locationChange, setLocationChange] = useState('')
@@ -19,10 +27,10 @@ export default function Home() {
     setErrorInput(false)
   }
 
-  const store = useSelector(state => state.weather.weather)
+  const store = useSelector((state: RootState) => state.weather.weather)
   const storeKeyLength = Object.keys(store || {}).length
 
-  const error = useSelector((state) => state.weather.error);
+  const error = useSelector((state: RootState) => state.weather.error);
 
   const dispatch = useDispatch()
 
@@ -31,10 +39,10 @@ export default function Home() {
     setLocationChange(e.target.value)
   }
 
-  const handlerSearch = () => {
+  const handlerSearch = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const inputValue = locationChange;
     if(locationChange.length !== 0){
-      dispatch(fetchWeatherData(locationChange))
-      console.log('location inside fun: ', locationChange)
+      dispatch(fetchWeatherData(inputValue) as any)
       setLocationChange('')
       setSearch(false)
       setErrorInput(false)
@@ -53,7 +61,7 @@ export default function Home() {
         try {
           const city = await getGeoLocalization(lat, long);
   
-          const weatherData = dispatch(fetchWeatherData(city));
+          const weatherData = dispatch(fetchWeatherData(city) as any);
   
         } catch (error) {
           console.error('Error al obtener la ubicación o datos del clima:', error);

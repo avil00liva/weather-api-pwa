@@ -1,6 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getWeatherApiData } from '@/services'
 
+type WeatherApiResponse = {
+  data: any
+  error: {
+    response: {
+      data: {
+        error: {
+          message: string;
+        }
+      }
+    }
+  } | null
+};
 
 export const fetchWeatherData = createAsyncThunk('weatherData', async (location: string, { rejectWithValue }) => {
     try {

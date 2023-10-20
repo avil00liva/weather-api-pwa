@@ -1,8 +1,13 @@
 import axios from 'axios'
 import { env } from 'process'
 
+type WeatherApiResponse = {
+  data: any
+  error: any
+};
 
-export const getWeatherApiData = async (location: string) => {
+
+export const getWeatherApiData = async (location: string): Promise<WeatherApiResponse> => {
     try {
         const key = process.env.NEXT_PUBLIC_API_KEY;
         const response = await axios.get(

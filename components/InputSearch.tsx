@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 
 type Props = {
-  handlerSearch: (value: string) => void
+  handlerSearch: (event: React.MouseEvent<HTMLButtonElement>) => void
   handleChangeInput: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
   location: string
   error: boolean
