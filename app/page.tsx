@@ -3,6 +3,7 @@ import ErrorModal from '@/components/ErrorModal'
 import ForecastWeather from '@/components/ForecastWeather'
 import InputSearch from '@/components/InputSearch'
 import LoadingDefault from '@/components/LoadingDefault'
+import LocationModal from '@/components/locationModal'
 import { getGeoLocalization, getWeatherApiData } from '@/services'
 import { fetchWeatherData } from '@/store/weatherSlice'
 import Image from 'next/image'
@@ -21,6 +22,7 @@ export default function Home() {
   const [search, setSearch] = useState(false)
   const [locationChange, setLocationChange] = useState('')
   const [errorInput, setErrorInput] = useState(false)
+  const [showLocationModal, setShowLocationModal] = useState(false);
 
   const handleModalSearch = () => {
     setSearch(prevState => !prevState)
@@ -52,7 +54,7 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
+/*   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const lat = position.coords.latitude;
@@ -70,10 +72,64 @@ export default function Home() {
     } else {
       console.log('La geolocalización no está disponible en este navegador.');
     }
-  }, [])
+  }, []) */
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const long = position.coords.longitude;
+  
+          try {
+            const city = await getGeoLocalization(lat, long);
+            const weatherData = dispatch(fetchWeatherData(city) as any);
+          } catch (error) {
+            console.error('Error al obtener la ubicación o datos del clima:', error);
+          }
+        },
+        (error) => {
+          if (error.code === error.PERMISSION_DENIED) {
+            console.log('El usuario denegó el acceso a la ubicación.');
+            setShowLocationModal(true)
+          } else {
+            console.error('Error de geolocalización: ' + error.message);
+          }
+        }
+      );
+    } else {
+      console.log('La geolocalización no está disponible en este navegador.');
+    }
+  }, []);
+
+  const handleRetryLocationPermission = () => {
+    setShowLocationModal(false);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const long = position.coords.longitude;
+          try {
+            const city = await getGeoLocalization(lat, long);
+            const weatherData = dispatch(fetchWeatherData(city) as any);
+          } catch (error) {
+            console.error('Error al obtener la ubicación o datos del clima:', error);
+          }
+        },
+        (error) => {
+          if (error.code === error.PERMISSION_DENIED) {
+            console.log('El usuario denegó el acceso a la ubicación.');
+          } else {
+            console.error('Error de geolocalización: ' + error.message);
+          }
+        }
+      );
+    }
+  };
+  
 
   return (
     <main className="container md:max-w-[500px] md:mx-auto bg-[#f4f4f4]">
+      {showLocationModal && <LocationModal activate={handleRetryLocationPermission} />}
       {error && <ErrorModal error={error} />}
       <section>
        <div className="weatherContainer">
